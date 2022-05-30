@@ -21,7 +21,7 @@
                                 @csrf
                                 <fieldset class="form-group position-relative has-icon-left">
 {{--                                    <input type="password" class="form-control round" id="password" placeholder="Enter Password" required>--}}
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Enter Password" required autocomplete="current-password">
+                                    <input id="password" type="password" class="form-control round @error('password') is-invalid @enderror" name="password" placeholder="Enter Password" required autocomplete="current-password">
 
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
