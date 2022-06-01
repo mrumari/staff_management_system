@@ -379,25 +379,32 @@
                     </div>
                 </ul>
             </li>
-            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="ft-aperture"></i><span>UI</span></a>
+            <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="ft-aperture"></i><span>Development</span></a>
                 <ul class="dropdown-menu">
                     <div class="arrow_box">
-                        <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Content</a>
+                        <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Departments</a>
                             <ul class="dropdown-menu">
                                 <div class="arrow_box">
-                                    <li data-menu=""><a class="dropdown-item" href="content-grid.html" data-toggle="dropdown">Grid</a>
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('departments.index')}}" data-toggle="dropdown">List</a>
                                     </li>
-                                    <li data-menu=""><a class="dropdown-item" href="content-typography.html" data-toggle="dropdown">Typography</a>
-                                    </li>
-                                    <li data-menu=""><a class="dropdown-item" href="content-text-utilities.html" data-toggle="dropdown">Text utilities</a>
-                                    </li>
-                                    <li data-menu=""><a class="dropdown-item" href="content-syntax-highlighter.html" data-toggle="dropdown">Syntax highlighter</a>
-                                    </li>
-                                    <li data-menu=""><a class="dropdown-item" href="content-helper-classes.html" data-toggle="dropdown">Helper classes</a>
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('departments.create')}}" data-toggle="dropdown"> Add New</a>
                                     </li>
                                 </div>
                             </ul>
                         </li>
+
+                        <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Users</a>
+                            <ul class="dropdown-menu">
+                                <div class="arrow_box">
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('users.index')}}" data-toggle="dropdown">List</a>
+                                    </li>
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('users.create')}}" data-toggle="dropdown"> Add New</a>
+                                    </li>
+                                </div>
+                            </ul>
+                        </li>
+
+
                         <li class="dropdown dropdown-submenu" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Color Palette</a>
                             <ul class="dropdown-menu">
                                 <div class="arrow_box">

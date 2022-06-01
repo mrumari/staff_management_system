@@ -22,7 +22,9 @@
 {{--</div>--}}
 <!-- BEGIN: Body-->
 <!-- BEGIN: Content-->
-
+<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-wrapper-before"></div>
         <div class="content-body">
             <!-- Revenue, Hit Rate & Deals -->
             <div class="row">
@@ -543,6 +545,8 @@
             </div>
             <!--/ Total earning & Recent Sales  -->
         </div>
+    </div>
+</div>
 
 <!-- END: Content-->
 <!-- BEGIN: Footer-->
