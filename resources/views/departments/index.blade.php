@@ -1,6 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.app_admin')
 @section('stylesheet')
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/vendors/css/forms/toggle/switchery.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/vendors/css/extensions/toastr.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/css/plugins/extensions/toastr.css')}}">
 @endsection
 
 @section('content')
@@ -98,17 +101,21 @@
 
 @endsection
 @section('javascript')
-    <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/buttons.flash.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/jszip.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/pdfmake.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/vfs_fonts.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/buttons.html5.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/buttons.print.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/buttons.flash.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/jszip.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/pdfmake.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/vfs_fonts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/buttons.html5.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/buttons.print.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/forms/toggle/switchery.min.js') }}" type="text/javascript"></script>
 {{--    <script src="{{ asset('app-assets/js/scripts/tables/datatables/datatable-advanced.js') }}" type="text/javascript"></script>--}}
 {{--    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>--}}
-    <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.all.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/extensions/toastr.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/js/scripts/extensions/toastr.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/extensions/sweetalert2.all.js') }}" type="text/javascript"></script>
     <script>
         $(function () {
             var dataTable = $('.file-export').DataTable({
@@ -133,7 +140,7 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
                     {data: 'description', name: 'description'},
-                    {data: 'status', name: 'status'},
+                    {data: 'status', name: 'status', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 responsive:true,
@@ -195,6 +202,35 @@
                 swal('Warning!', 'There is no checkbox checked', 'warning')
             }
         });
+
+            ////////////////// Change status by ID //////////
+            $(document).on("change", ".switchery", function () {
+                var id = $(this).attr('data-id');
+                var status = $(this).attr('data-status');
+
+                $.ajax({
+                    url: '{{route('departments.changeStatus')}}',
+                    type: 'DELETE',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    data: {id: id, status: status},
+                    success: function (response) {
+                        if(response.flag){
+                            toastr.success(response.msg,'Success Alert!');
+                            // swal('Deleted!', response.success, 'success')
+                            dataTable.ajax.reload();
+                            //window.location='{{route('departments.index')}}'
+                            //dataTable.ajax.reload();
+                        }else{
+                            toastr.error(response.msg, 'Error Alert.');
+
+                        }
+                    }
+                });
+                // alert($(this).find('input').data('value'));
+            });
+
+
+
 
         });
         // Checkbox checked

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 01, 2022 at 05:19 AM
+-- Generation Time: Jun 02, 2022 at 05:43 AM
 -- Server version: 5.7.36
 -- PHP Version: 8.0.13
 
@@ -33,22 +33,23 @@ CREATE TABLE IF NOT EXISTS `departments` (
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci,
   `status` tinyint(1) NOT NULL DEFAULT '0',
+  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
   `created_by` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
+  KEY `departments_parent_id_foreign` (`parent_id`),
   KEY `departments_created_by_foreign` (`created_by`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `departments`
 --
 
-INSERT INTO `departments` (`id`, `name`, `description`, `status`, `created_by`, `created_at`, `updated_at`) VALUES
-(3, 'df sdf dsf sdf sdf', 'sdf sdf sdf', 0, 1, '2022-06-01 00:00:28', '2022-06-01 00:00:28'),
-(4, 'sdf sdf sdf', 'ad asd asd', 0, 1, '2022-06-01 00:02:00', '2022-06-01 00:02:00'),
-(5, 'sdf sdf sd', 'sdf sdf sdf', 0, 1, '2022-06-01 00:02:44', '2022-06-01 00:02:44'),
-(6, 'sdf sdf', 'sdf sdf dsf sd', 0, 1, '2022-06-01 00:03:47', '2022-06-01 00:03:47');
+INSERT INTO `departments` (`id`, `name`, `description`, `status`, `parent_id`, `created_by`, `created_at`, `updated_at`) VALUES
+(1, 'Parent Department 1', 'Parent Department 1', 0, NULL, 1, '2022-06-02 00:05:54', '2022-06-02 00:05:54'),
+(2, 'Child Department 1 of Parent Department 1', 'Child Department 1 of Parent Department 1', 1, 1, 2, '2022-06-02 00:06:55', '2022-06-02 00:07:01'),
+(3, 'Parent Department 2', 'sdf sadf sdf sdf sdf', 0, NULL, 1, '2022-06-02 00:12:41', '2022-06-02 00:12:41');
 
 -- --------------------------------------------------------
 
@@ -147,22 +148,26 @@ CREATE TABLE IF NOT EXISTS `users` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `created_by` bigint(20) UNSIGNED DEFAULT NULL,
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `users_created_by_foreign` (`created_by`),
-  KEY `users_department_id_foreign` (`department_id`)
+  KEY `users_department_id_foreign` (`department_id`),
+  KEY `users_parent_id_foreign` (`parent_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `user_type`, `status`, `created_by`, `department_id`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Mr Umari', 'iqbalchannar796@gmail.com', NULL, '$2y$10$v10fZJGFIM3lf.oEj2KU7ukKoH9tkPuCrBXaZMXe4Nk9UOenC5BIK', 0, 1, NULL, NULL, NULL, '2022-05-31 08:54:33', '2022-05-31 08:54:33'),
-(4, 'dasd asd', 'iqbalchaasdasdasnnar796@gmail.com', NULL, '$2y$10$Isd1LEC0WPu/XELu62Dz3.lYxrgQ4HXzEMpFTSh0xG9RlXuLAxCwW', 1, 1, 1, 3, NULL, '2022-06-01 00:05:49', '2022-06-01 00:05:49');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `user_type`, `status`, `created_by`, `department_id`, `parent_id`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Mr Umari', 'iqbalchannar796@gmail.com', NULL, '$2y$10$gxMzd1hBHtV334CK4z1Kt.tgUXilie02U7vPz.0wePzmjqAM3nwnm', 0, 1, NULL, NULL, NULL, NULL, '2022-06-02 00:05:15', '2022-06-02 00:05:15'),
+(2, 'Mr Umari 1', 'parentadmin@gmail.com', NULL, '$2y$10$F19i.kNfz111z5YGhVf/9.eZmoB8.cIAT3KQA4TZCtvKOa.nl4g4m', 1, 1, 1, 1, NULL, NULL, '2022-06-02 00:06:21', '2022-06-02 00:06:21'),
+(3, 'Mr Umari 2', 'parentadmin2@gmail.com', NULL, '$2y$10$KwNdjXGXl/B2BwRdlH6x5eYWv9fBuVTCeU/Z/KIHArPaTQFWfbt8G', 1, 1, 1, 3, NULL, NULL, '2022-06-02 00:13:44', '2022-06-02 00:13:44'),
+(4, 'Child User of Admin for Child Department 1', 'user@gmail.com', NULL, '$2y$10$0CNGd07rmuhaAC8xQ7N/sedED1LTflDj/9B1TYBTCGS6czDczCSJK', 2, 1, 2, 2, 2, NULL, '2022-06-02 00:15:41', '2022-06-02 00:15:41');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,6 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.app_admin')
 @section('stylesheet')
-    <link rel="stylesheet" type="text/css" href="{{asset('app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/vendors/css/forms/toggle/switchery.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/vendors/css/extensions/toastr.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('admin-theme/app-assets/css/plugins/extensions/toastr.css')}}">
 @endsection
 
 @section('content')
@@ -56,10 +59,12 @@
                                             </a>
                                         </div>
                                         </div>
-{{--                                        <p class="card-text"></p>--}}
+
+
+
+
 
                                         <div class="table-responsive">
-
                                             @if ($message = Session::get('success'))
                                                 <div class="col-md-12 pt-1">
                                                 <div class="alert alert-success alert-dismissible mb-2" role="alert">
@@ -102,17 +107,23 @@
 
 @endsection
 @section('javascript')
-    <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/buttons.flash.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/jszip.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/pdfmake.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/vfs_fonts.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/buttons.html5.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('app-assets/vendors/js/tables/buttons.print.min.js') }}" type="text/javascript"></script>
-{{--    <script src="{{ asset('app-assets/js/scripts/tables/datatables/datatable-advanced.js') }}" type="text/javascript"></script>--}}
-{{--    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>--}}
-    <script src="{{ asset('app-assets/vendors/js/extensions/sweetalert2.all.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/datatable/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/buttons.flash.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/jszip.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/pdfmake.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/vfs_fonts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/buttons.html5.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/tables/buttons.print.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/forms/toggle/switchery.min.js') }}" type="text/javascript"></script>
+    {{--    <script src="{{ asset('app-assets/js/scripts/tables/datatables/datatable-advanced.js') }}" type="text/javascript"></script>--}}
+
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/extensions/toastr.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('admin-theme/app-assets/js/scripts/extensions/toastr.js') }}" type="text/javascript"></script>
+    <!-- END: Page JS-->
+
+
+    <script src="{{ asset('admin-theme/app-assets/vendors/js/extensions/sweetalert2.all.js') }}" type="text/javascript"></script>
     <script>
         $(function () {
             var dataTable = $('.file-export').DataTable({
@@ -137,7 +148,7 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
-                    {data: 'status', name: 'status'},
+                    {data: 'status', name: 'status', orderable: false, searchable: false},
                     {data: 'department_name', name: 'department_name'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
@@ -157,7 +168,7 @@
             }
         });
 
-        // Delete record
+        // Multiple Delete record
         $('#delete_record').click(function(){
 
             var deleteids_arr = [];
@@ -201,7 +212,83 @@
             }
         });
 
+
+  ///////////////////// Multiple Status Change //////////
+
+            $('#change_status_record').click(function(){
+
+                var deleteids_arr = [];
+                // Read all checked checkboxes
+                $("input:checkbox[class=delete_check]:checked").each(function () {
+                    deleteids_arr.push($(this).val());
+                });
+
+                // Check checkbox checked or not
+                if(deleteids_arr.length > 0){
+
+                    swal({
+                        title: 'Are you sure you want to delete selected record(s)?',
+                        text: 'You won\'t be able to revert this!',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then(function () {
+                        /* Read more about isConfirmed, isDenied below */
+                        $.ajax({
+                            url: '{{route('users.deleteAll')}}',
+                            type: 'DELETE',
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            data: {request: 2, deleteids_arr: deleteids_arr},
+                            success: function (response) {
+                                // $("input:checkbox[class=delete_check]:checked").each(function() {
+                                //     $(this).parents("tr").remove();
+                                // });
+                                swal('Deleted!', response.success, 'success')
+                                dataTable.ajax.reload();
+                                //window.location='{{route('departments.index')}}'
+                                //dataTable.ajax.reload();
+                            }
+                        });
+                    }).catch(swal.noop);
+
+                }else{
+                    swal('Warning!', 'There is no checkbox checked', 'warning')
+                }
+            });
+
+
+
+////////////////// Change status by ID //////////
+            $(document).on("change", ".switchery", function () {
+                var id = $(this).attr('data-id');
+                var status = $(this).attr('data-status');
+
+                $.ajax({
+                    url: '{{route('users.changeStatus')}}',
+                    type: 'DELETE',
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    data: {id: id, status: status},
+                    success: function (response) {
+                        if(response.flag){
+                            toastr.success(response.msg,'Success Alert!');
+                            // swal('Deleted!', response.success, 'success')
+                            dataTable.ajax.reload();
+                            //window.location='{{route('departments.index')}}'
+                            //dataTable.ajax.reload();
+                        }else{
+                            toastr.error(response.msg, 'Error Alert.');
+
+                        }
+                    }
+                });
+                // alert($(this).find('input').data('value'));
+            });
+
+
         });
+
         // Checkbox checked
         function checkcheckbox(){
 
@@ -223,5 +310,14 @@
                 $('#checkall').prop('checked', false);
             }
         }
+
+
+
+
+
+        // $('.js-check-click-button').click(function () {
+        //  alert('ddddddddddd');
+        // })
+
     </script>
 @endsection

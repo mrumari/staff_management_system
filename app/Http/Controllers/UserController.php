@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data=User::where('user_type',1)->with('department')->get();
+            $data=User::where('user_type',2)->where('parent_id',auth()->user()->id)->with('department')->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -22,7 +22,32 @@ class UserController extends Controller
                     return "<input type='checkbox' class='delete_check' id='delcheck_".$row->id."' onclick='checkcheckbox();' value='".$row->id."'>";
                 })
                 ->addColumn('status', function ($row) {
-                    return $row->status ? 'Enabled':'Disabled';
+                    $currentStatus = $row->status ? 'Enabled':'Disabled';
+                    $id= $row->id;
+                    $checked='';
+                    if($currentStatus=='Enabled'){
+                       $newStatus = 0;
+                        $checked ='checked';
+                    }else{
+                        $newStatus = 1;
+                    }
+
+                    $x = '<input  class="switchery js-check-click" data-id="'.$id.'" data-status="'.$newStatus.'" type="checkbox"  '.$checked.'  />';
+
+
+//                    $x = '<div class="btn-group mr-1 mb-1">';
+//                    $x =$x.'<button type="button" class="btn btn-outline-primary">'.$currentStatus.'</button>';
+//                    $x =$x.'<button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+//                    $x =$x.'<span class="sr-only">Toggle Dropdown</span>';
+//                    $x =$x.'</button>';
+//                    $x =$x.'<div class="dropdown-menu">';
+//                    $x =$x.'<a class="dropdown-item" onclick="change_status_by_id('.$id.','.$newStatus.')">'.$newStatusValue.'</a>';
+//                    $x =$x.'<a class="dropdown-item" href="#">Another action</a>';
+//                    $x =$x.'<a class="dropdown-item" href="#">Something else here</a>';
+//                    $x =$x.'</div>';
+//                    $x =$x.'</div>';
+                    return $x;
+
                 })
                 ->addColumn('department_name', function ($row) {
                     return $row->department->name;
@@ -48,7 +73,7 @@ class UserController extends Controller
                 })
                 // ->rawColumns(['action'])
 
-                ->rawColumns(['checkbox','action'])
+                ->rawColumns(['checkbox','status','action'])
                 ->make(true);
         }
         return view('users.index');
@@ -56,7 +81,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $departments= Department::all();
+        $departments= Department::where('parent_id',auth()->user()->department_id)->get();
         return view('users.create',compact('departments'));
     }
 
@@ -74,7 +99,8 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->user_type = 1;
+        $user->user_type = 2;
+        $user->parent_id = auth()->user()->id;
         $user->created_by = auth()->user()->id;
         $user->save();
         return redirect()->route('users.index')
@@ -88,7 +114,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $departments= Department::all();
+        $departments= Department::where('parent_id',auth()->user()->department_id)->get();
         $user = User::findOrFail($id);
         return view('users.edit',compact('user','departments'));
     }
@@ -128,7 +154,24 @@ class UserController extends Controller
         }else{
             return response()->json(['success' => "Users have not been deleted successfully."]);
         }
+    }
 
+
+    public function changeStatus(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        $user->status = $request->status;
+        if($user->save()) {
+            return response()->json([
+                'flag'=>true,
+                'msg' => "User status have been changed successfully"
+                ]);
+        }else{
+            return response()->json([
+                'flag'=>false,
+                'msg' => "User status have not been changed due to internel error"
+                ]);
+        }
     }
 }
 

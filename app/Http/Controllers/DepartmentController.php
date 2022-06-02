@@ -12,14 +12,25 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data=Department::all();
+            $data=Department::where('parent_id',auth()->user()->department_id)->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('checkbox', function ($row) {
                     return "<input type='checkbox' class='delete_check' id='delcheck_".$row->id."' onclick='checkcheckbox();' value='".$row->id."'>";
                 })
                 ->addColumn('status', function ($row) {
-                    return $row->status ? 'Enabled':'Disabled';
+                    $currentStatus = $row->status ? 'Enabled':'Disabled';
+                    $id= $row->id;
+                    $checked='';
+                    if($currentStatus=='Enabled'){
+                        $newStatus = 0;
+                        $checked ='checked';
+                    }else{
+                        $newStatus = 1;
+                    }
+
+                    $x = '<input  class="switchery js-check-click" data-id="'.$id.'" data-status="'.$newStatus.'" type="checkbox"  '.$checked.'  />';
+                    return $x;
                 })
 //                ->addColumn('action', function($row){
 //                    $btn = '<a href="'.route('departments.edit',$row->id).'"  data-toggle="tooltip" data-placement="top" data-original-title="Tooltip on top" title="" class="btn btn-sm ml-3 btn-danger"><i class="la la-edit"></i></a>';
@@ -42,7 +53,7 @@ class DepartmentController extends Controller
                 })
                // ->rawColumns(['action'])
 
-                ->rawColumns(['checkbox','action'])
+                ->rawColumns(['checkbox','status','action'])
                 ->make(true);
         }
         return view('departments.index');
@@ -62,6 +73,7 @@ class DepartmentController extends Controller
         $company = new Department();
         $company->name = $request->name;
         $company->description = $request->description;
+        $company->parent_id = auth()->user()->department_id;
         $company->created_by = auth()->user()->id;
         $company->save();
         return redirect()->route('departments.index')
@@ -111,6 +123,22 @@ class DepartmentController extends Controller
         }else{
             return response()->json(['success' => "Departments have not been Deleted successfully."]);
         }
+    }
 
+    public function changeStatus(Request $request)
+    {
+        $department = Department::findOrFail($request->id);
+        $department->status = $request->status;
+        if($department->save()) {
+            return response()->json([
+                'flag'=>true,
+                'msg' => "User status have been changed successfully"
+            ]);
+        }else{
+            return response()->json([
+                'flag'=>false,
+                'msg' => "User status have not been changed due to internel error"
+            ]);
+        }
     }
 }

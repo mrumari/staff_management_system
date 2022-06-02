@@ -18,6 +18,8 @@ class CreateDepartmentsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->boolean('status')->default(0);
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('departments')->onDelete('cascade');
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
