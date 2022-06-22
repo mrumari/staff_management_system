@@ -12,7 +12,7 @@
     'use strict';
 
     // Default
-    $('.repeater-default').repeater();
+  //  $('.repeater-default').repeater();
 
     // Custom Show / Hide Configurations
     $('.file-repeater, .contact-repeater').repeater({

@@ -58,7 +58,7 @@ class LoginController extends Controller
                         if($user_type==0){//Admin
                             return redirect()->route('super-admin.home');
                         } elseif($user_type==1){
-                            return redirect()->route('home');
+                            return redirect()->route('admin.home');
                         } elseif($user_type==2){//Patient
                             return redirect()->route('home');
                         }

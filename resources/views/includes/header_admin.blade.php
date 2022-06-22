@@ -32,9 +32,9 @@
                                 <h6 class="dropdown-menu-header text-uppercase"><i class="ft-layers"></i> Recent Products</h6>
                                 <div class="carousel slide pt-1" id="carousel-example" data-ride="carousel">
                                     <div class="carousel-inner" role="listbox">
-                                        <div class="carousel-item active"><img class="d-block w-100" src="app-assets/images/carousel/08.jpg" alt="First slide"></div>
-                                        <div class="carousel-item"><img class="d-block w-100" src="app-assets/images/carousel/03.jpg" alt="Second slide"></div>
-                                        <div class="carousel-item"><img class="d-block w-100" src="app-assets/images/carousel/01.jpg" alt="Third slide"></div>
+                                        <div class="carousel-item active"><img class="d-block w-100" src="{{asset('admin-theme/app-assets/images/carousel/08.jpg')}}" alt="First slide"></div>
+                                        <div class="carousel-item"><img class="d-block w-100" src="{{asset('admin-theme/app-assets/images/carousel/03.jpg')}}" alt="Second slide"></div>
+                                        <div class="carousel-item"><img class="d-block w-100" src="{{asset('admin-theme/app-assets/images/carousel/01.jpg')}}" alt="Third slide"></div>
                                     </div><a class="carousel-control-prev" href="#carousel-example" role="button" data-slide="prev"><span class="la la-angle-left" aria-hidden="true"></span><span class="sr-only">Previous</span></a><a class="carousel-control-next" href="#carousel-example" role="button" data-slide="next"><span class="la la-angle-right icon-next" aria-hidden="true"></span><span class="sr-only">Next</span></a>
                                     <h5 class="pt-1">Special title treatment</h5>
                                     <p>Jelly beans sugar plum.</p>
@@ -179,7 +179,7 @@
                                 </li>
                                 <li class="scrollable-container media-list w-100"><a href="javascript:void(0)">
                                         <div class="media">
-                                            <div class="media-left"><span class="avatar avatar-sm rounded-circle"><img src="app-assets/images/portrait/small/avatar-s-6.png" alt="avatar"></span></div>
+                                            <div class="media-left"><span class="avatar avatar-sm rounded-circle"><img src="{{asset('admin-theme/app-assets/images/portrait/small/avatar-s-6.png')}}" alt="avatar"></span></div>
                                             <div class="media-body">
                                                 <h6 class="media-heading text-bold-700">Sarah Montery<i class="ft-circle font-small-2 success float-right"></i></h6>
                                                 <p class="notification-text font-small-3 text-muted text-bold-600">Everything looks good. I will provide...</p><small>
@@ -197,7 +197,7 @@
                                         </div>
                                     </a><a href="javascript:void(0)">
                                         <div class="media">
-                                            <div class="media-left"><span class="avatar avatar-sm rounded-circle"><img src="app-assets/images/portrait/small/avatar-s-3.png" alt="avatar"></span></div>
+                                            <div class="media-left"><span class="avatar avatar-sm rounded-circle"><img src="{{asset('admin-theme/app-assets/images/portrait/small/avatar-s-3.png')}}" alt="avatar"></span></div>
                                             <div class="media-body">
                                                 <h6 class="media-heading text-bold-700">Kelly Reyes<i class="ft-circle font-small-2 warning float-right"></i></h6>
                                                 <p class="notification-text font-small-3 text-muted text-bold-600">Check once and let me know if you...</p><small>
@@ -206,7 +206,7 @@
                                         </div>
                                     </a><a href="javascript:void(0)">
                                         <div class="media">
-                                            <div class="media-left"><span class="avatar avatar-sm rounded-circle"><img src="app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"></span></div>
+                                            <div class="media-left"><span class="avatar avatar-sm rounded-circle"><img src="{{asset('admin-theme/app-assets/images/portrait/small/avatar-s-19.png')}}" alt="avatar"></span></div>
                                             <div class="media-body">
                                                 <h6 class="media-heading text-bold-700">Tonny Deep<i class="ft-circle font-small-2 danger float-right"></i></h6>
                                                 <p class="notification-text font-small-3 text-muted text-bold-600">We will start new project development...</p><small>
@@ -243,10 +243,10 @@
 
 
 <!-- BEGIN: Main Menu-->
-<div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true" data-img="app-assets/images/backgrounds/02.jpg">
+<div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true" data-img="{{asset('admin-theme/app-assets/images/backgrounds/02.jpg')}}">
     <div class="navbar-header">
         <ul class="nav navbar-nav flex-row">
-            <li class="nav-item mr-auto"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="Chameleon admin logo" src="app-assets/images/logo/logo.png" />
+            <li class="nav-item mr-auto"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="Chameleon admin logo" src="{{asset('admin-theme/app-assets/images/logo/logo.png')}}" />
                     <h3 class="brand-text">Chameleon</h3>
                 </a></li>
             <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
@@ -293,19 +293,19 @@
                 <ul class="menu-content">
                     <li><a class="menu-item" href="#">Departments</a>
                         <ul class="menu-content">
-                            <li><a class="menu-item" href="{{route('departments.index')}}">List</a>
+                            <li><a class="menu-item" href="{{route('admin.departments.index')}}">List</a>
                             </li>
-                            <li><a class="menu-item" href="{{route('departments.create')}}">Add New</a>
+                            <li><a class="menu-item" href="{{route('admin.departments.create')}}">Add New</a>
                             </li>
                         </ul>
                     </li>
-                    <li><a class="menu-item" href="#">Users</a>
+                    <li><a class="menu-item" href="#">Teams</a>
                         <ul class="menu-content">
                             <li>
-                                <a class="menu-item" href="{{route('users.index')}}">List</a>
+                                <a class="menu-item" href="{{route('admin.teams.index')}}">List</a>
                             </li>
                             <li>
-                                <a class="menu-item" href="{{route('users.create')}}">Add New</a>
+                                <a class="menu-item" href="{{route('admin.teams.create')}}">Add New</a>
                             </li>
                         </ul>
                     </li>

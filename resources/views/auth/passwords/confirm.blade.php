@@ -7,7 +7,7 @@
             <div class="col-lg-4 col-md-6 col-10 box-shadow-2 p-0">
                 <div class="card border-grey border-lighten-3 px-2 py-2 m-0">
                     <div class="card-header border-0 text-center">
-                        <img src="{{asset('app-assets/images/portrait/small/avatar-s-1.png')}}" alt="unlock-user" class="rounded-circle img-fluid center-block">
+                        <img src="{{asset('super-admin-theme/app-assets/images/portrait/small/avatar-s-1.png')}}" alt="unlock-user" class="rounded-circle img-fluid center-block">
                         <h5 class="card-title mt-1">John Doe</h5>
                     </div>
 

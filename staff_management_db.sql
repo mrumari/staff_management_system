@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 02, 2022 at 05:43 AM
+-- Generation Time: Jun 09, 2022 at 05:47 AM
 -- Server version: 5.7.36
 -- PHP Version: 8.0.13
 
@@ -40,16 +40,15 @@ CREATE TABLE IF NOT EXISTS `departments` (
   PRIMARY KEY (`id`),
   KEY `departments_parent_id_foreign` (`parent_id`),
   KEY `departments_created_by_foreign` (`created_by`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `departments`
 --
 
 INSERT INTO `departments` (`id`, `name`, `description`, `status`, `parent_id`, `created_by`, `created_at`, `updated_at`) VALUES
-(1, 'Parent Department 1', 'Parent Department 1', 0, NULL, 1, '2022-06-02 00:05:54', '2022-06-02 00:05:54'),
-(2, 'Child Department 1 of Parent Department 1', 'Child Department 1 of Parent Department 1', 1, 1, 2, '2022-06-02 00:06:55', '2022-06-02 00:07:01'),
-(3, 'Parent Department 2', 'sdf sadf sdf sdf sdf', 0, NULL, 1, '2022-06-02 00:12:41', '2022-06-02 00:12:41');
+(1, 'dasd asd', 'ASD asd ASD', 0, NULL, 1, '2022-06-08 02:34:05', '2022-06-08 02:34:05'),
+(2, 'DDDD', 'DSF DSF SDF', 0, 1, 2, '2022-06-08 02:35:08', '2022-06-08 02:35:08');
 
 -- --------------------------------------------------------
 
@@ -82,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -93,7 +92,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(5, '2022_05_30_112948_create_departments_table', 1);
+(5, '2022_05_30_112948_create_departments_table', 1),
+(6, '2022_06_08_024936_create_teams_table', 1),
+(7, '2022_06_08_070427_create_team_user_roles_table', 1);
 
 -- --------------------------------------------------------
 
@@ -134,6 +135,64 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `teams`
+--
+
+DROP TABLE IF EXISTS `teams`;
+CREATE TABLE IF NOT EXISTS `teams` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `department_id` bigint(20) UNSIGNED NOT NULL,
+  `parent_department_id` bigint(20) UNSIGNED NOT NULL,
+  `created_by` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `teams_department_id_foreign` (`department_id`),
+  KEY `teams_parent_department_id_foreign` (`parent_department_id`),
+  KEY `teams_created_by_foreign` (`created_by`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `teams`
+--
+
+INSERT INTO `teams` (`id`, `name`, `description`, `status`, `department_id`, `parent_department_id`, `created_by`, `created_at`, `updated_at`) VALUES
+(1, 'First Team', 'A FSDF ADSF SD', 0, 2, 1, 2, '2022-06-08 02:36:18', '2022-06-08 02:36:18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `team_user_roles`
+--
+
+DROP TABLE IF EXISTS `team_user_roles`;
+CREATE TABLE IF NOT EXISTS `team_user_roles` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `team_id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `role` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1- Team Lead, 2- Team Member, 3- Manger, 4- Project Manger',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `team_user_roles_team_id_foreign` (`team_id`),
+  KEY `team_user_roles_user_id_foreign` (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `team_user_roles`
+--
+
+INSERT INTO `team_user_roles` (`id`, `team_id`, `user_id`, `role`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, 1, '2022-06-08 02:36:18', '2022-06-08 02:36:18'),
+(2, 1, 4, 4, '2022-06-08 02:36:19', '2022-06-08 02:36:19'),
+(3, 1, 5, 1, '2022-06-08 02:36:19', '2022-06-08 02:36:19');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -149,6 +208,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_by` bigint(20) UNSIGNED DEFAULT NULL,
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
   `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `parent_department_id` bigint(20) UNSIGNED DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -156,18 +216,20 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`),
   KEY `users_created_by_foreign` (`created_by`),
   KEY `users_department_id_foreign` (`department_id`),
-  KEY `users_parent_id_foreign` (`parent_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `users_parent_id_foreign` (`parent_id`),
+  KEY `users_parent_department_id_foreign` (`parent_department_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `user_type`, `status`, `created_by`, `department_id`, `parent_id`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Mr Umari', 'iqbalchannar796@gmail.com', NULL, '$2y$10$gxMzd1hBHtV334CK4z1Kt.tgUXilie02U7vPz.0wePzmjqAM3nwnm', 0, 1, NULL, NULL, NULL, NULL, '2022-06-02 00:05:15', '2022-06-02 00:05:15'),
-(2, 'Mr Umari 1', 'parentadmin@gmail.com', NULL, '$2y$10$F19i.kNfz111z5YGhVf/9.eZmoB8.cIAT3KQA4TZCtvKOa.nl4g4m', 1, 1, 1, 1, NULL, NULL, '2022-06-02 00:06:21', '2022-06-02 00:06:21'),
-(3, 'Mr Umari 2', 'parentadmin2@gmail.com', NULL, '$2y$10$KwNdjXGXl/B2BwRdlH6x5eYWv9fBuVTCeU/Z/KIHArPaTQFWfbt8G', 1, 1, 1, 3, NULL, NULL, '2022-06-02 00:13:44', '2022-06-02 00:13:44'),
-(4, 'Child User of Admin for Child Department 1', 'user@gmail.com', NULL, '$2y$10$0CNGd07rmuhaAC8xQ7N/sedED1LTflDj/9B1TYBTCGS6czDczCSJK', 2, 1, 2, 2, 2, NULL, '2022-06-02 00:15:41', '2022-06-02 00:15:41');
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `user_type`, `status`, `created_by`, `department_id`, `parent_id`, `parent_department_id`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'First Team', 'iqbalchannar796@gmail.com', NULL, '$2y$10$qM0WXklmDm47WL2eco4fCOwZrgE4sJQPEitdbAn2X1JmbzGRo2HEm', 0, 1, NULL, NULL, NULL, NULL, NULL, '2022-06-08 02:33:31', '2022-06-08 02:33:31'),
+(2, 'First Team', 'parentadmin@gmail.com', NULL, '$2y$10$c.NpsvVkzOZxjDZugSuep.CARgoawbuDUkD1WGzYOTQF2EiyPYMg6', 1, 1, 1, 1, NULL, NULL, NULL, '2022-06-08 02:34:26', '2022-06-08 02:34:26'),
+(3, 'SFSDFDSFF', 'SFADFS@GMAIL.COM', NULL, '$2y$10$OCOlxguyCx4kOj9w9WksGOVUKJC4sYAsDWeBbqSvMufyM2.aKDRtu', 2, 1, 2, 2, 2, 1, NULL, '2022-06-08 02:36:18', '2022-06-08 02:36:18'),
+(4, 'SDF SDF SDF', 'iqbalchannaSDFSDFSDFr796@gmail.com', NULL, '$2y$10$BSkibwg6C4zszw.xbAQlW.7LOO1UIcctDPKm1NGrFFGeRh0Zs4fUO', 2, 1, 2, 2, 2, 1, NULL, '2022-06-08 02:36:19', '2022-06-08 02:36:19'),
+(5, 'SDFSF SDF', 'parentadmin1234@gmail.com', NULL, '$2y$10$3PUjaDa7Mat3vpPd8/1hvuW6Lh47pfyDw1IAboW/arFA7DM41P2ua', 2, 1, 2, 2, 2, 1, NULL, '2022-06-08 02:36:19', '2022-06-08 02:36:19');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

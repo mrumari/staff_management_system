@@ -97,28 +97,29 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     /**
      * Department Admin Routes
      */
-    Route::group(['prefix' => 'departments'], function() {
-        Route::get('/', 'DepartmentController@index')->name('departments.index');
-        Route::get('/create', 'DepartmentController@create')->name('departments.create');
-        Route::post('/create', 'DepartmentController@store')->name('departments.store');
-        Route::get('/{id}/show', 'DepartmentController@show')->name('departments.show');
-        Route::get('/{id}/edit', 'DepartmentController@edit')->name('departments.edit');
-        Route::patch('/{id}/update', 'DepartmentController@update')->name('departments.update');
-        Route::delete('/{id}/delete', 'DepartmentController@destroy')->name('departments.destroy');
-        Route::delete('changeStatus', 'DepartmentController@changeStatus')->name('departments.changeStatus');
-        Route::delete('deleteAll', 'DepartmentController@deleteAll')->name('departments.deleteAll');;
+    Route::group(['prefix' => 'admin/departments'], function() {
+        Route::get('/', 'Admin\DepartmentController@index')->name('admin.departments.index');
+        Route::get('/create', 'Admin\DepartmentController@create')->name('admin.departments.create');
+        Route::post('/create', 'Admin\DepartmentController@store')->name('admin.departments.store');
+        Route::get('/{id}/show', 'Admin\DepartmentController@show')->name('admin.admin.departments.show');
+        Route::get('/{id}/edit', 'Admin\DepartmentController@edit')->name('admin.departments.edit');
+        Route::patch('/{id}/update', 'Admin\DepartmentController@update')->name('admin.departments.update');
+        Route::delete('/{id}/delete', 'Admin\DepartmentController@destroy')->name('admin.departments.destroy');
+        Route::delete('changeStatus', 'Admin\DepartmentController@changeStatus')->name('admin.departments.changeStatus');
+        Route::delete('deleteAll', 'Admin\DepartmentController@deleteAll')->name('admin.departments.deleteAll');;
     });
 
-    Route::group(['prefix' => 'users'], function() {
-        Route::get('/', 'UserController@index')->name('users.index');
-        Route::get('/create', 'UserController@create')->name('users.create');
-        Route::post('/create', 'UserController@store')->name('users.store');
-        Route::get('/{id}/show', 'UserController@show')->name('users.show');
-        Route::get('/{id}/edit', 'UserController@edit')->name('users.edit');
-        Route::patch('/{id}/update', 'UserController@update')->name('users.update');
-        Route::delete('/{id}/delete', 'UserController@destroy')->name('users.destroy');
-        Route::delete('changeStatus', 'UserController@changeStatus')->name('users.changeStatus');
-        Route::delete('deleteAll', 'UserController@deleteAll')->name('users.deleteAll');;
+    Route::group(['prefix' => 'admin/teams'], function() {
+        Route::get('/', 'Admin\TeamController@index')->name('admin.teams.index');
+        Route::get('/create', 'Admin\TeamController@create')->name('admin.teams.create');
+        Route::post('/create', 'Admin\TeamController@store')->name('admin.teams.store');
+        Route::get('/{id}/show', 'Admin\TeamController@show')->name('admin.teams.show');
+        Route::get('/{id}/edit', 'Admin\TeamController@edit')->name('admin.teams.edit');
+        Route::patch('/{id}/update', 'Admin\TeamController@update')->name('admin.teams.update');
+        Route::delete('/{id}/delete', 'Admin\TeamController@destroy')->name('admin.teams.destroy');
+        Route::delete('/changeStatus', 'Admin\TeamController@changeStatus')->name('admin.teams.changeStatus');
+        Route::delete('/deleteAll', 'Admin\TeamController@deleteAll')->name('admin.teams.deleteAll');;
+        Route::get('/autocomplete-search','Admin\TeamController@autocompleteSearch')->name('admin.teams.autocompleteSearch');
     });
 
 

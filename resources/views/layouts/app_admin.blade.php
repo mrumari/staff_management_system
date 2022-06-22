@@ -27,6 +27,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-theme/app-assets/css/bootstrap-extended.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-theme/app-assets/css/colors.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-theme/app-assets/css/components.css') }}">
+
     <!-- END: Theme CSS-->
 
     <!-- BEGIN: Page CSS-->
@@ -76,7 +77,7 @@
          <!-- END: Theme JS-->
 
          <!-- BEGIN: Page JS-->
-         <script src="{{ asset('admin-theme/app-assets/js/scripts/pages/dashboard-analytics.js') }}" type="text/javascript"></script>
+{{--         <script src="{{ asset('admin-theme/app-assets/js/scripts/pages/dashboard-analytics.js') }}" type="text/javascript"></script>--}}
          <!-- END: Page JS-->
 
 
