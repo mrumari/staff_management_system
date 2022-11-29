@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('plain_password')->nullable();;
             $table->tinyInteger('user_type')->default(0)->comment('0- for super admin, 1- for department admin, 2- for sub-department user');
             $table->boolean('status')->default(1);
             $table->unsignedBigInteger('created_by')->nullable();
@@ -29,6 +30,8 @@ class CreateUsersTable extends Migration
             $table->foreign('parent_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('parent_department_id')->nullable();
             $table->foreign('parent_department_id')->references('id')->on('departments')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

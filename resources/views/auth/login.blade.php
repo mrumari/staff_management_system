@@ -12,16 +12,30 @@
                         </div>
                         <div class="font-large-1  text-center">
                             Member Login
-        </div>
+                        </div>
                     </div>
+
                     <div class="card-content">
+
+
+                        @if ($message = Session::get('error'))
+                            <div class="col-md-12 pt-1">
+                                <div class="alert alert-danger alert-dismissible mb-2" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>Error  </strong> {{ $message }}.
+                                </div>
+                            </div>
+                        @endif
+
+
+
                         <div class="card-body">
                             <form class="form-horizontal" method="POST" action="{{ route('login') }}" novalidate>
                                 @csrf
                                 <fieldset class="form-group position-relative has-icon-left">
-{{--                                    <input type="text" class="form-control round" id="user-name" placeholder="Your Username" required>--}}
-                                    <input id="email" type="email" class="form-control round @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  placeholder="Your Username" required autocomplete="email" autofocus>
-
+                                    <input id="user-name" type="email" class="form-control round @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  placeholder="Your Username" required autocomplete="email" autofocus>
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -32,9 +46,7 @@
                                     </div>
                                 </fieldset>
                                 <fieldset class="form-group position-relative has-icon-left">
-{{--                                    <input type="password" class="form-control round" id="user-password" placeholder="Enter Password" required>--}}
-                                    <input id="password" type="password" class="form-control round @error('password') is-invalid @enderror" name="password"  placeholder="Enter Password" required autocomplete="current-password">
-
+                                    <input id="user-password" type="password" class="form-control round @error('password') is-invalid @enderror" name="password"  placeholder="Enter Password" required autocomplete="current-password">
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -55,14 +67,14 @@
 
                             </form>
                         </div>
-                        <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-2 "><span>OR Sign Up Using</span></p>
-                        <div class="text-center">
-                            <a href="#" class="btn btn-social-icon round mr-1 mb-1 btn-facebook"><span class="ft-facebook"></span></a>
-                            <a href="#" class="btn btn-social-icon round mr-1 mb-1 btn-twitter"><span class="ft-twitter"></span></a>
-                            <a href="#" class="btn btn-social-icon round mr-1 mb-1 btn-instagram"><span class="ft-instagram"></span></a>
-                        </div>
+{{--                        <p class="card-subtitle line-on-side text-muted text-center font-small-3 mx-2 my-2 "><span>OR Sign Up Using</span></p>--}}
+{{--                        <div class="text-center">--}}
+{{--                            <a href="#" class="btn btn-social-icon round mr-1 mb-1 btn-facebook"><span class="ft-facebook"></span></a>--}}
+{{--                            <a href="#" class="btn btn-social-icon round mr-1 mb-1 btn-twitter"><span class="ft-twitter"></span></a>--}}
+{{--                            <a href="#" class="btn btn-social-icon round mr-1 mb-1 btn-instagram"><span class="ft-instagram"></span></a>--}}
+{{--                        </div>--}}
 
-                        <p class="card-subtitle text-muted text-right font-small-3 mx-2 my-1"><span>Don't have an account ? <a href="{{route('register')}}" class="card-link">Sign Up</a></span></p>
+{{--                        <p class="card-subtitle text-muted text-right font-small-3 mx-2 my-1"><span>Don't have an account ? <a href="{{route('register')}}" class="card-link">Sign Up</a></span></p>--}}
                     </div>
                 </div>
             </div>

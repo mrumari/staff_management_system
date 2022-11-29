@@ -21,6 +21,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/vendors/css/vendors.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/vendors/css/charts/chartist.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/vendors/css/charts/chartist-plugin-tooltip.css') }}">
+
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -36,12 +37,14 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/css/core/colors/palette-gradient.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/css/pages/chat-application.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/css/pages/dashboard-analytics.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/fonts/line-awesome/css/line-awesome.min.css') }}">
+
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/assets/css/style.css') }}">
     <!-- END: Custom CSS-->
-
+        <link rel="stylesheet" type="text/css" href="{{ asset('super-admin-theme/app-assets/vendors/bootstrap4-toggle/css/bootstrap4-toggle.css') }}">
 
 
 
@@ -52,13 +55,15 @@
 <body class="horizontal-layout horizontal-menu 2-columns  " data-open="hover" data-menu="horizontal-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
       @include('includes.header_super_admin')
          @yield('content')
-    <a class="btn btn-try-builder btn-bg-gradient-x-purple-red btn-glow white" href="https://www.themeselection.com/layout-builder/horizontal" target="_blank">Try Layout Builder</a>
+{{--    <a class="btn btn-try-builder btn-bg-gradient-x-purple-red btn-glow white" href="https://www.themeselection.com/layout-builder/horizontal" target="_blank">Try Layout Builder</a>--}}
     <footer class="footer footer-static footer-light navbar-shadow">
-        <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">2019 &copy; Copyright <a class="text-bold-800 grey darken-2" href="https://themeselection.com" target="_blank">ThemeSelection</a></span>
-            <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-                <li class="list-inline-item"><a class="my-1" href="https://themeselection.com/" target="_blank"> More themes</a></li>
-                <li class="list-inline-item"><a class="my-1" href="https://themeselection.com/support" target="_blank"> Support</a></li>
-            </ul>
+        <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">2019 &copy; Copyright
+{{--                <a class="text-bold-800 grey darken-2" href="https://themeselection.com" target="_blank">ThemeSelection</a>--}}
+            </span>
+{{--            <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">--}}
+{{--                <li class="list-inline-item"><a class="my-1" href="https://themeselection.com/" target="_blank"> More themes</a></li>--}}
+{{--                <li class="list-inline-item"><a class="my-1" href="https://themeselection.com/support" target="_blank"> Support</a></li>--}}
+{{--            </ul>--}}
         </div>
     </footer>
 
@@ -72,6 +77,9 @@
       <script type="text/javascript" src="{{ asset('super-admin-theme/app-assets/vendors/js/ui/jquery.sticky.js') }}"></script>
       <script src="{{ asset('super-admin-theme/app-assets/vendors/js/charts/chartist.min.js') }}" type="text/javascript"></script>
       <script src="{{ asset('super-admin-theme/app-assets/vendors/js/charts/chartist-plugin-tooltip.min.js') }}" type="text/javascript"></script>
+
+      <script src="{{ asset('super-admin-theme/app-assets/vendors/bootstrap4-toggle/js/bootstrap4-toggle.js') }}" type="text/javascript"></script>
+      <script type="text/javascript" src="{{ asset('super-admin-theme/app-assets/vendors/js/ui/jquery.sticky.js') }}"></script>
       <!-- END: Page Vendor JS-->
 
       <!-- BEGIN: Theme JS-->
@@ -80,6 +88,7 @@
       <!-- END: Theme JS-->
 
       <!-- BEGIN: Page JS-->
+      <script src="{{ asset('super-admin-theme/app-assets/js/scripts/extensions/block-ui.js') }}" type="text/javascript"></script>
       <script src="{{ asset('super-admin-theme/app-assets/js/scripts/pages/dashboard-analytics.js') }}" type="text/javascript"></script>
       <!-- END: Page JS-->
 

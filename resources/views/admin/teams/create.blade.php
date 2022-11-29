@@ -228,6 +228,7 @@
             minLength: 1,
             maxItem: 20,
             order: "asc",
+            cancelButton: false,
             hint: true,
             dynamic: true,
             delay: 500,

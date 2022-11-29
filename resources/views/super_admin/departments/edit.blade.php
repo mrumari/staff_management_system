@@ -10,17 +10,17 @@
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-4 col-12 mb-2">
-                    <h3 class="content-header-title">Basic Forms</h3>
+                    <h3 class="content-header-title">Edit Department</h3>
                 </div>
                 <div class="content-header-right col-md-8 col-12">
                     <div class="breadcrumbs-top float-md-right">
                         <div class="breadcrumb-wrapper mr-1">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a>
+                                <li class="breadcrumb-item"><a href="{{route('super-admin.home')}}">Home</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#">Form Layouts</a>
+                                <li class="breadcrumb-item"><a href="{{route('super-admin.departments.index')}}">Department Listing</a>
                                 </li>
-                                <li class="breadcrumb-item active"><a href="#">Basic Forms</a>
+                                <li class="breadcrumb-item active"><a href="{{route('super-admin.departments.edit',$department->id)}}">Edit Department</a>
                                 </li>
                             </ol>
                         </div>
@@ -34,7 +34,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title" id="basic-layout-form">Simple Form</h4>
+                                    <h4 class="card-title" id="basic-layout-form">Edit Department</h4>
                                     <a class="heading-elements-toggle">
                                         <i class="la la-ellipsis-v font-medium-3"></i>
                                     </a>
@@ -65,15 +65,27 @@
                                 </div>
                                 <div class="card-content collapse show">
                                     <div class="card-body">
-                                        <div class="card-text">
-                                            <p>This is the most basic and default form having form section.</p>
-                                        </div>
                                         <form class="form" method="post" action="{{ route('super-admin.departments.update',$department->id) }}">
                                             @csrf
                                             @method('PATCH')
                                             <div class="form-body">
                                                 <h4 class="form-section">
                                                     <i class="ft-flag"></i> Department Info</h4>
+                                                <div class="form-group">
+                                                    <label for="CompanyStatus">Company Name</label>
+                                                    <select name="company_id" class="form-control" required>
+                                                        <option value="">----- SELECT -----</option>
+                                                        @foreach($companies as $company)
+                                                            <option value="{{$company->id}}" @if($company->id == $department->company_id) selected @endif>{{$company->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('company_id')
+                                                    <label class="danger">{{ $message }}</label>
+                                                    @enderror
+                                                </div>
+
+
+
                                                 <div class="form-group">
                                                     <label for="departmentName">Department Name</label>
                                                     <input type="text" id="departmentName" class="form-control" placeholder="Department Name" name="name" value="{{ $department->name }}">
@@ -102,9 +114,9 @@
                                             </div>
 
                                             <div class="form-actions right">
-                                                <button type="button" class="btn btn-danger mr-1">
+                                                <a href="{{route('super-admin.departments.index')}}" class="btn btn-danger mr-1">
                                                     <i class="ft-x"></i> Cancel
-                                                </button>
+                                                </a>
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="la la-check-square-o"></i> Save
                                                 </button>

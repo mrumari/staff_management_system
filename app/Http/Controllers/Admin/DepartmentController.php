@@ -74,6 +74,7 @@ class DepartmentController extends Controller
         $company = new Department();
         $company->name = $request->name;
         $company->description = $request->description;
+        $company->company_id = auth()->user()->company_id;
         $company->parent_id = auth()->user()->department_id;
         $company->created_by = auth()->user()->id;
         $company->save();

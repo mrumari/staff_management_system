@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Team;
+use App\Models\TeamUser;
 use App\Models\TeamUserRole;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -122,18 +123,25 @@ class TeamController extends Controller
                 $user->name = $userRaw['full_name'];
                 $user->email = $userRaw['email'];
                 $user->password = Hash::make($userRaw['password']);
+                $user->plain_password=$userRaw['password'];
                 $user->user_type = 2;
                 $user->parent_id = auth()->user()->id;
                 $user->parent_department_id = auth()->user()->department_id;
                 $user->created_by = auth()->user()->id;
                 $user->save();
 
-                $teamUserRole = new TeamUserRole();
-                $teamUserRole->team_id = $team->id;
-                $teamUserRole->user_id = $user->id;
-                $teamUserRole->role = $userRaw['role'];
-                $teamUserRole->save();
+                $teamUser = new TeamUser();
+                $teamUser->team_id = $team->id;
+                $teamUser->user_id = $user->id;
+                $teamUser->role = $userRaw['role'];
+                $teamUser->save();
 
+            }else{
+                $teamUser = new TeamUser();
+                $teamUser->team_id = $team->id;
+                $teamUser->user_id = $user->id;
+                $teamUser->role = $userRaw['role'];
+                $teamUser->save();
             }
         }
 
@@ -149,23 +157,76 @@ class TeamController extends Controller
     public function edit($id)
     {
         $departments= Department::where('parent_id',auth()->user()->department_id)->get();
-        $user = User::findOrFail($id);
-        return view('admin.teams.edit',compact('user','departments'));
+        $team = Team::findOrFail($id);//->with('teamUserRole');
+
+       // print_r($team->teamUsers);
+       // die();
+
+        return view('admin.teams.edit',compact('team','departments'));
     }
 
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $team = Team::findOrFail($id);
         $request->validate([
             'department_id' => 'required',
             'name' => 'required',
-            'email' => ['required','min:5','max:191','email','unique:users,email,'.$user->id],
+           // 'email' => ['required','min:5','max:191','email','unique:users,email,'.$user->id],
             //'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
         ]);
 
-        $user->department_id = $request->department_id;
-        $user->name = $request->name;
-        $user->email = $request->email;
+//        $user->department_id = $request->department_id;
+//        $user->name = $request->name;
+//        $user->email = $request->email;
+
+
+        //$team = new Team();
+        $team->name = $request->name;
+        $team->description = $request->description;
+        $team->department_id = $request->department_id;
+        $team->parent_department_id = auth()->user()->department_id;
+        $team->created_by = auth()->user()->id;
+        $team->save();
+
+        foreach ($request->users as $userRaw){
+            $user =User::where('email',$userRaw['email'])->first();
+            if (!$user) {
+                $user = new User();
+                $user->department_id = $request->department_id;
+                $user->name = $userRaw['full_name'];
+                $user->email = $userRaw['email'];
+                $user->password = Hash::make($userRaw['password']);
+                $user->plain_password=$userRaw['password'];
+                $user->user_type = 2;
+                $user->parent_id = auth()->user()->id;
+                $user->parent_department_id = auth()->user()->department_id;
+                $user->created_by = auth()->user()->id;
+                $user->save();
+
+                $teamUser = new TeamUser();
+                $teamUser->team_id = $team->id;
+                $teamUser->user_id = $user->id;
+                $teamUser->role = $userRaw['role'];
+                $teamUser->save();
+            }else{
+                $teamUser =TeamUser::where('team_id',$team->id)->where('user_id',$user->id)->first();
+                if (!$teamUser) {
+                    $teamUser = new TeamUser();
+                    $teamUser->team_id = $team->id;
+                    $teamUser->user_id = $user->id;
+                    $teamUser->role = $userRaw['role'];
+                    $teamUser->save();
+                }else{
+                    $teamUser->team_id = $team->id;
+                    $teamUser->user_id = $user->id;
+                    $teamUser->role = $userRaw['role'];
+                    $teamUser->save();
+                }
+            }
+        }
+
+
+
         $user->status = $request->status;
         $user->save();
         return redirect()->route('admin.teams.index')

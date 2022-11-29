@@ -54,7 +54,7 @@
 
 <!-- BEGIN: Body-->
 
-<body class="vertical-layout vertical-menu-modern 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" data-color="bg-chartbg" data-col="2-columns">
+<body class="vertical-layout vertical-menu-modern 2-columns   fixed-navbar" data-open="click" data-menu="vertical-menu-modern" @if(isset($flag)) data-color="bg-chartbg"  @else data-color="bg-gradient-x-purple-red"  @endif data-col="2-columns">
 
          @include('includes.header_team_member')
          @yield('content')
